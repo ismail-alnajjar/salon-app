@@ -22,15 +22,14 @@ class CostumCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // ألوان الكارد بناءً على الوضع
     final Color cardColor = isDarkMode
-        ? const Color.fromARGB(255, 232, 230, 230).withOpacity(
-            0.9,
-          ) // داكن للدارك مود
+        ? Colors.black.withOpacity(0.3) // خلفية غامقة للدارك مود
         : const Color.fromARGB(
             255,
-            248,
-            246,
-            246,
-          ).withOpacity(0.9); // فاتح للوضع العادي
+            251,
+            250,
+            250,
+          ).withOpacity(0.99); // خلفية فاتحة للوضع العادي
+
     final Color textColor = isDarkMode ? Colors.white : Colors.black87;
     final Color iconColor = isDarkMode ? Colors.white : Colors.black87;
 
@@ -41,7 +40,7 @@ class CostumCard extends StatelessWidget {
         width: width ?? 160,
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(95, 255, 255, 255),
+          color: cardColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(

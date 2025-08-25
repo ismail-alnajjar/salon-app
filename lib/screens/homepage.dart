@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:salon_app/helper/Drawer.dart';
+import 'package:salon_app/helper/static1.dart';
+import 'package:salon_app/screens/HiarPage.dart';
+import 'package:salon_app/screens/MakeupPage.dart';
+import 'package:salon_app/screens/NailPage.dart';
+import 'package:salon_app/screens/OffersPage.dart';
+import 'package:salon_app/screens/OurOffersPage.dart';
+import 'package:salon_app/screens/SkinPage.dart';
 import 'package:salon_app/widget/CostumCard.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:salon_app/widget/CostumContainer.dart';
+import 'package:salon_app/widget/CostumIconB.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,15 +21,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool isDarkMode = false;
-  DateTime? lastPressed;
 
-  void _launchURL(String uri) async {
-    final Uri url = Uri.parse(uri);
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      throw 'Could not launch $url';
-    }
-  }
+  DateTime? lastPressed;
 
   Future<bool> _onWillPop() async {
     final now = DateTime.now();
@@ -41,77 +43,38 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final gradientColors = isDarkMode
-        ? [Color(0xFF1A1A2E), Color(0xFF2E2E3A)]
-        : [
-            Color.fromARGB(255, 168, 100, 175),
-            Color(0xFF6A11CB),
-            Color.fromARGB(255, 168, 100, 175),
-          ];
 
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: Drawer(
-          child: Container(
-            color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.9),
-            child: Column(
-              children: [
-                DrawerHeader(
-                  child: Center(
-                    child: Text(
-                      'Menu',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(Icons.person, color: Colors.black87),
-                  title: Text('Profile'),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(Icons.settings, color: Colors.black87),
-                  title: Text('Settings'),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(Icons.calendar_today, color: Colors.black87),
-                  title: Text('History'),
-                  onTap: () {},
-                ),
-                const Divider(),
-                SwitchListTile(
-                  title: Text('Dark Mode'),
-                  value: isDarkMode,
-                  onChanged: (val) {
-                    setState(() {
-                      isDarkMode = val;
-                    });
-                  },
-                  secondary: Icon(
-                    isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-          ),
+        ////////////////////////////////////////////
+        drawer: CustomDrawer(
+          isDarkMode: isDarkMode,
+          onThemeChanged: (val) {
+            setState(() {
+              isDarkMode = val;
+            });
+          },
         ),
+        ///////////////////////////////////////////////////
         body: Stack(
           children: [
             // الخلفية المتدرجة
             Container(
               width: double.infinity,
               height: double.infinity,
+
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: gradientColors,
+                  colors: [
+                    isDarkMode
+                        ? const Color.fromARGB(255, 111, 93, 79)
+                        : const Color(0xffE7C6AD),
+                    isDarkMode
+                        ? const Color.fromARGB(255, 95, 94, 94)
+                        : const Color.fromARGB(255, 190, 189, 189),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -130,7 +93,9 @@ class _HomePageState extends State<HomePage> {
                           IconButton(
                             icon: Icon(
                               Icons.menu,
-                              color: isDarkMode ? Colors.white70 : Colors.white,
+                              color: isDarkMode
+                                  ? const Color.fromARGB(179, 255, 255, 255)
+                                  : const Color.fromARGB(255, 4, 4, 4),
                             ),
                             onPressed: () {
                               _scaffoldKey.currentState?.openDrawer();
@@ -140,31 +105,40 @@ class _HomePageState extends State<HomePage> {
                       ),
 
                       // بطاقة العروض الكبيرة
-                      const SizedBox(height: 20),
 
                       // صف مربعات الخدمات
                       Wrap(
                         children: [
                           Container(
-                            height: 700,
+                            height: 680,
                             width: 360,
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color.fromARGB(255, 168, 100, 175),
-
-                                  Color.fromARGB(255, 168, 100, 175),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              color: const Color.fromARGB(255, 227, 191, 224),
+                              color: isDarkMode
+                                  ? const Color.fromARGB(
+                                      255,
+                                      144,
+                                      79,
+                                      79,
+                                    ).withOpacity(0.3)
+                                  : Color(0xffFBECE5),
                               borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black,
+                                  color: isDarkMode
+                                      ? const Color.fromARGB(
+                                          255,
+                                          111,
+                                          110,
+                                          110,
+                                        ).withOpacity(0.2)
+                                      : const Color.fromARGB(
+                                          255,
+                                          68,
+                                          67,
+                                          67,
+                                        ).withOpacity(0.1),
                                   offset: Offset(0, 4),
-                                  blurRadius: 8,
+                                  blurRadius: 100,
                                 ),
                               ],
                             ),
@@ -175,15 +149,24 @@ class _HomePageState extends State<HomePage> {
                               ),
                               child: Column(
                                 children: [
-                                  CostumCard(
-                                    height: 150,
-                                    width: 300,
-                                    title: 'Special Offer',
-                                    icon: FontAwesomeIcons.solidAddressCard,
-                                    isDarkMode: isDarkMode,
-                                    onTap: () {},
+                                  ////////////////////////////////////////////////
+                                  CostumContainer(
+                                    ////////////////////////////////////////////////////////////////////////////////
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => OffersPage(),
+                                        ),
+                                      );
+                                    },
+                                    Name: 'assets/sshwar.png',
+                                    title1: 'Special Offer',
+                                    title2: 'Enjoy Exclusive deals',
                                   ),
                                   ////////////////////////////////////////////////////////////////
+                                  ///
+                                  SizedBox(height: 25),
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: Padding(
@@ -201,24 +184,39 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
+                                  SizedBox(height: 10),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       CostumCard(
                                         height: 75,
                                         width: 150,
-                                        title: 'Special Offer',
-                                        icon: FontAwesomeIcons.solidAddressCard,
+                                        title: 'Hiar Care',
+                                        icon: FontAwesomeIcons.scissors,
                                         isDarkMode: isDarkMode,
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => HairPage(),
+                                            ),
+                                          );
+                                        },
                                       ),
                                       CostumCard(
                                         height: 75,
                                         width: 150,
-                                        title: 'Special Offer',
-                                        icon: FontAwesomeIcons.solidAddressCard,
+                                        title: 'Nail Care',
+                                        icon: FontAwesomeIcons.handSparkles,
                                         isDarkMode: isDarkMode,
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => NailPage(),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ],
                                   ),
@@ -228,21 +226,37 @@ class _HomePageState extends State<HomePage> {
                                       CostumCard(
                                         height: 75,
                                         width: 150,
-                                        title: 'Special Offer',
-                                        icon: FontAwesomeIcons.solidAddressCard,
+                                        title: 'Skin Care',
+                                        icon: FontAwesomeIcons.solidFaceSmile,
                                         isDarkMode: isDarkMode,
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => SkinPage(),
+                                            ),
+                                          );
+                                        },
                                       ),
                                       CostumCard(
                                         height: 75,
                                         width: 150,
-                                        title: 'Special Offer',
-                                        icon: FontAwesomeIcons.solidAddressCard,
+                                        title: 'Makeup',
+                                        icon: Icons.brush,
                                         isDarkMode: isDarkMode,
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MakeupPage(),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ],
                                   ),
+                                  SizedBox(height: 18),
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: Padding(
@@ -260,53 +274,38 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                   ),
-                                  CostumCard(
-                                    height: 150,
-                                    width: 300,
-                                    title: 'Special Offer',
-                                    icon: FontAwesomeIcons.solidAddressCard,
-                                    isDarkMode: isDarkMode,
-                                    onTap: () {},
+                                  SizedBox(height: 10),
+                                  CostumContainer(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => OurOffersPage(),
+                                        ),
+                                      );
+                                    },
+                                    width: 10,
+                                    Name: 'assets/mana.png',
+                                    title1: '    Pedicure \n & Manicure ',
+                                    title2: 'Offer for \$30',
                                   ),
+                                  SizedBox(height: 25),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      IconButton(
-                                        icon: Icon(
-                                          Icons.facebook,
-                                          color: const Color.fromARGB(
-                                            255,
-                                            208,
-                                            211,
-                                            214,
-                                          ),
-                                          size: 30,
-                                        ),
-                                        onPressed: () {
-                                          _launchURL(
+                                      CostomIconB(
+                                        uri:
                                             'https://www.facebook.com/ismail.alnajjar.2025',
-                                          );
-                                        },
+                                        icon: FontAwesomeIcons.facebook,
                                       ),
-                                      IconButton(
-                                        icon: Icon(
-                                          FontAwesomeIcons.instagram,
-                                          color: const Color.fromARGB(
-                                            255,
-                                            208,
-                                            211,
-                                            214,
-                                          ),
-                                          size: 30,
-                                        ),
-                                        onPressed: () {
-                                          _launchURL(
-                                            'https://www.instagram.com/',
-                                          );
-                                        },
+                                      CostomIconB(
+                                        uri: 'https://www.instagram.com/',
+                                        icon: FontAwesomeIcons.instagram,
                                       ),
                                     ],
                                   ),
+
+                                  /////////////////////////
                                 ],
                               ),
                             ),

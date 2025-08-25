@@ -98,7 +98,11 @@ class _SignUpState extends ConsumerState<SignUp> {
           height: double.infinity,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF6A11CB), Color.fromARGB(255, 168, 100, 175)],
+              colors: [
+                Color(0xffD39E9E),
+                Color.fromARGB(255, 200, 171, 149),
+                Color.fromARGB(255, 171, 130, 130),
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
