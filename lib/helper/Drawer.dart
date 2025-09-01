@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/screens/Bookings.dart';
+import 'package:salon_app/widget/CostumListile.dart';
 
 class CustomDrawer extends StatelessWidget {
   final bool isDarkMode;
@@ -14,45 +16,63 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: const Color.fromARGB(255, 194, 192, 192).withOpacity(0.1),
-
+        color: isDarkMode ? Color(0xff6E5856) : Color(0xffF1E3DC),
         child: Column(
           children: [
-            const DrawerHeader(
+            DrawerHeader(
               child: Center(
                 child: Text(
                   'Menu',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: isDarkMode
+                        ? Color.fromARGB(255, 255, 255, 255)
+                        : Color.fromARGB(255, 0, 0, 0),
                   ),
                 ),
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.person, color: Colors.black87),
-              title: const Text('Profile'),
+            CostomListile(
+              title: 'Profile',
+              iconData: Icons.person,
               onTap: () {},
             ),
-            ListTile(
-              leading: const Icon(Icons.settings, color: Colors.black87),
-              title: const Text('Settings'),
+            CostomListile(
+              title: 'Settings',
+              iconData: Icons.settings,
               onTap: () {},
             ),
-            ListTile(
-              leading: const Icon(Icons.calendar_today, color: Colors.black87),
-              title: const Text('History'),
-              onTap: () {},
+            /////////////////////////////////////
+            CostomListile(
+              title: 'Bookings',
+              iconData: Icons.book_online,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BookingsPage()),
+                );
+              },
             ),
+            ////////////////////////////////////
             const Divider(),
             SwitchListTile(
-              title: const Text('Dark Mode'),
+              activeColor: Colors.black,
+              title: Text(
+                'Dark Mode',
+                style: TextStyle(
+                  color: isDarkMode
+                      ? Color.fromARGB(255, 255, 255, 255)
+                      : Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
               value: isDarkMode,
               onChanged: onThemeChanged,
               secondary: Icon(
                 isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                color: Colors.black87,
+                color: isDarkMode
+                    ? Color.fromARGB(255, 255, 255, 255)
+                    : Color.fromARGB(255, 0, 0, 0),
               ),
             ),
           ],

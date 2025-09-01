@@ -24,31 +24,31 @@ class _HomePageState extends State<HomePage> {
 
   DateTime? lastPressed;
 
-  Future<bool> _onWillPop() async {
-    final now = DateTime.now();
-    if (lastPressed == null ||
-        now.difference(lastPressed!) > const Duration(seconds: 2)) {
-      lastPressed = now;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Press back again to exit'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return false;
-    }
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return WillPopScope(
-      onWillPop: _onWillPop,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+
+        final now = DateTime.now();
+        if (lastPressed == null ||
+            now.difference(lastPressed!) > const Duration(seconds: 2)) {
+          lastPressed = now;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Press back again to exit'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        } else {
+          Navigator.of(context).pop();
+        }
+      },
       child: Scaffold(
         key: _scaffoldKey,
-        ////////////////////////////////////////////
         drawer: CustomDrawer(
           isDarkMode: isDarkMode,
           onThemeChanged: (val) {
@@ -57,14 +57,12 @@ class _HomePageState extends State<HomePage> {
             });
           },
         ),
-        ///////////////////////////////////////////////////
         body: Stack(
           children: [
             // الخلفية المتدرجة
             Container(
-              width: double.infinity,
-              height: double.infinity,
-
+              width: size.width,
+              height: size.height,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -85,9 +83,8 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // زر القائمة أعلى اليسار
+                      // زر القائمة
                       Row(
                         children: [
                           IconButton(
@@ -104,14 +101,12 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
 
-                      // بطاقة العروض الكبيرة
-
-                      // صف مربعات الخدمات
+                      // صف الخدمات والعروض
                       Wrap(
                         children: [
                           Container(
-                            height: 680,
-                            width: 360,
+                            height: size.height * 0.85, // بدل 680
+                            width: size.width * 0.9, // بدل 360
                             decoration: BoxDecoration(
                               color: isDarkMode
                                   ? const Color.fromARGB(
@@ -120,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                                       79,
                                       79,
                                     ).withOpacity(0.3)
-                                  : Color(0xffFBECE5),
+                                  : const Color(0xffFBECE5),
                               borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
@@ -137,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                                           67,
                                           67,
                                         ).withOpacity(0.1),
-                                  offset: Offset(0, 4),
+                                  offset: const Offset(0, 4),
                                   blurRadius: 100,
                                 ),
                               ],
@@ -149,14 +144,13 @@ class _HomePageState extends State<HomePage> {
                               ),
                               child: Column(
                                 children: [
-                                  ////////////////////////////////////////////////
                                   CostumContainer(
-                                    ////////////////////////////////////////////////////////////////////////////////
                                     onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => OffersPage(),
+                                          builder: (context) =>
+                                              const OffersPage(),
                                         ),
                                       );
                                     },
@@ -164,9 +158,7 @@ class _HomePageState extends State<HomePage> {
                                     title1: 'Special Offer',
                                     title2: 'Enjoy Exclusive deals',
                                   ),
-                                  ////////////////////////////////////////////////////////////////
-                                  ///
-                                  SizedBox(height: 25),
+                                  const SizedBox(height: 25),
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: Padding(
@@ -180,11 +172,10 @@ class _HomePageState extends State<HomePage> {
                                               ? Colors.white
                                               : Colors.black87,
                                         ),
-                                        textAlign: TextAlign.left,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -198,7 +189,8 @@ class _HomePageState extends State<HomePage> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => HairPage(),
+                                              builder: (context) =>
+                                                  const HairPage(),
                                             ),
                                           );
                                         },
@@ -213,7 +205,8 @@ class _HomePageState extends State<HomePage> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => NailPage(),
+                                              builder: (context) =>
+                                                  const NailPage(),
                                             ),
                                           );
                                         },
@@ -233,7 +226,8 @@ class _HomePageState extends State<HomePage> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => SkinPage(),
+                                              builder: (context) =>
+                                                  const SkinPage(),
                                             ),
                                           );
                                         },
@@ -249,14 +243,14 @@ class _HomePageState extends State<HomePage> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  MakeupPage(),
+                                                  const MakeupPage(),
                                             ),
                                           );
                                         },
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 18),
+                                  const SizedBox(height: 18),
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: Padding(
@@ -270,17 +264,17 @@ class _HomePageState extends State<HomePage> {
                                               ? Colors.white
                                               : Colors.black87,
                                         ),
-                                        textAlign: TextAlign.left,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   CostumContainer(
                                     onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => OurOffersPage(),
+                                          builder: (context) =>
+                                              const OurOffersPage(),
                                         ),
                                       );
                                     },
@@ -289,10 +283,10 @@ class _HomePageState extends State<HomePage> {
                                     title1: '    Pedicure \n & Manicure ',
                                     title2: 'Offer for \$30',
                                   ),
-                                  SizedBox(height: 25),
+                                  const SizedBox(height: 25),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    children: const [
                                       CostomIconB(
                                         uri:
                                             'https://www.facebook.com/ismail.alnajjar.2025',
@@ -304,8 +298,6 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ],
                                   ),
-
-                                  /////////////////////////
                                 ],
                               ),
                             ),

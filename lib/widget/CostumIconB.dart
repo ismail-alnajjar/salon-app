@@ -20,8 +20,8 @@ class CostomIconB extends StatelessWidget {
       icon: Icon(
         icon,
         color: isDarkMode
-            ? Colors.white70
-            : const Color.fromARGB(255, 52, 51, 51),
+            ? const Color.fromARGB(179, 0, 0, 0)
+            : const Color.fromARGB(255, 0, 0, 0),
         size: 30,
       ),
       onPressed: () {

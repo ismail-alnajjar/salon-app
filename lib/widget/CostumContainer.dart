@@ -9,12 +9,18 @@ class CostumContainer extends StatelessWidget {
     required this.title2,
     this.width,
     this.onTap,
+    this.height,
+    this.height1,
+    this.width1,
   });
   final String Name;
   final String title1;
   final String title2;
   final double? width;
   final VoidCallback? onTap;
+  final double? height;
+  final double? height1;
+  final double? width1;
 
   @override
   Widget build(BuildContext context) {
