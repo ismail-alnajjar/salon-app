@@ -101,208 +101,214 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
 
-                      // صف الخدمات والعروض
-                      Wrap(
-                        children: [
-                          Container(
-                            height: size.height * 0.85, // بدل 680
-                            width: size.width * 0.9, // بدل 360
-                            decoration: BoxDecoration(
+                      // الكونتينر الأساسي
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: isDarkMode
+                              ? const Color.fromARGB(
+                                  255,
+                                  144,
+                                  79,
+                                  79,
+                                ).withOpacity(0.3)
+                              : const Color(0xffFBECE5),
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
                               color: isDarkMode
                                   ? const Color.fromARGB(
                                       255,
-                                      144,
-                                      79,
-                                      79,
-                                    ).withOpacity(0.3)
-                                  : const Color(0xffFBECE5),
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: isDarkMode
-                                      ? const Color.fromARGB(
-                                          255,
-                                          111,
-                                          110,
-                                          110,
-                                        ).withOpacity(0.2)
-                                      : const Color.fromARGB(
-                                          255,
-                                          68,
-                                          67,
-                                          67,
-                                        ).withOpacity(0.1),
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 100,
-                                ),
-                              ],
+                                      111,
+                                      110,
+                                      110,
+                                    ).withOpacity(0.2)
+                                  : const Color.fromARGB(
+                                      255,
+                                      68,
+                                      67,
+                                      67,
+                                    ).withOpacity(0.1),
+                              offset: const Offset(0, 4),
+                              blurRadius: 100,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 30,
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 30,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CostumContainer(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const OffersPage(),
+                                    ),
+                                  );
+                                },
+                                Name: 'assets/sshwar.png',
+                                title1: 'Special Offer',
+                                title2: 'Enjoy Exclusive deals',
+                                Size: 22,
                               ),
-                              child: Column(
+                              const SizedBox(height: 25),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Book an Appointment',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: isDarkMode
+                                          ? Colors.white
+                                          : Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+
+                              // الصف الأول من الخدمات
+                              Row(
                                 children: [
-                                  CostumContainer(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const OffersPage(),
-                                        ),
-                                      );
-                                    },
-                                    Name: 'assets/sshwar.png',
-                                    title1: 'Special Offer',
-                                    title2: 'Enjoy Exclusive deals',
-                                  ),
-                                  const SizedBox(height: 25),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        'Book an Appointment',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: isDarkMode
-                                              ? Colors.white
-                                              : Colors.black87,
-                                        ),
-                                      ),
+                                  Expanded(
+                                    child: CostumCard(
+                                      height: 75,
+                                      title: 'Hair Care',
+                                      icon: FontAwesomeIcons.scissors,
+                                      isDarkMode: isDarkMode,
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const HairPage(),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CostumCard(
-                                        height: 75,
-                                        width: 150,
-                                        title: 'Hiar Care',
-                                        icon: FontAwesomeIcons.scissors,
-                                        isDarkMode: isDarkMode,
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const HairPage(),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      CostumCard(
-                                        height: 75,
-                                        width: 150,
-                                        title: 'Nail Care',
-                                        icon: FontAwesomeIcons.handSparkles,
-                                        isDarkMode: isDarkMode,
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const NailPage(),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CostumCard(
-                                        height: 75,
-                                        width: 150,
-                                        title: 'Skin Care',
-                                        icon: FontAwesomeIcons.solidFaceSmile,
-                                        isDarkMode: isDarkMode,
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SkinPage(),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      CostumCard(
-                                        height: 75,
-                                        width: 150,
-                                        title: 'Makeup',
-                                        icon: Icons.brush,
-                                        isDarkMode: isDarkMode,
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const MakeupPage(),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 18),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        'Our Services',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: isDarkMode
-                                              ? Colors.white
-                                              : Colors.black87,
-                                        ),
-                                      ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: CostumCard(
+                                      height: 75,
+                                      title: 'Nail Care',
+                                      icon: FontAwesomeIcons.handSparkles,
+                                      isDarkMode: isDarkMode,
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const NailPage(),
+                                          ),
+                                        );
+                                      },
                                     ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  CostumContainer(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const OurOffersPage(),
-                                        ),
-                                      );
-                                    },
-                                    width: 10,
-                                    Name: 'assets/mana.png',
-                                    title1: '    Pedicure \n & Manicure ',
-                                    title2: 'Offer for \$30',
-                                  ),
-                                  const SizedBox(height: 25),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      CostomIconB(
-                                        uri:
-                                            'https://www.facebook.com/ismail.alnajjar.2025',
-                                        icon: FontAwesomeIcons.facebook,
-                                      ),
-                                      CostomIconB(
-                                        uri: 'https://www.instagram.com/',
-                                        icon: FontAwesomeIcons.instagram,
-                                      ),
-                                    ],
                                   ),
                                 ],
                               ),
-                            ),
+                              const SizedBox(height: 10),
+
+                              // الصف الثاني من الخدمات
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: CostumCard(
+                                      height: 75,
+                                      title: 'Skin Care',
+                                      icon: FontAwesomeIcons.solidFaceSmile,
+                                      isDarkMode: isDarkMode,
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SkinCarePage(),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: CostumCard(
+                                      height: 75,
+                                      title: 'Makeup',
+                                      icon: Icons.brush,
+                                      isDarkMode: isDarkMode,
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MakeupPage(),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 18),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    'Our Services',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: isDarkMode
+                                          ? Colors.white
+                                          : Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              CostumContainer(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const OurOffersPage(),
+                                    ),
+                                  );
+                                },
+                                Name: 'assets/mana.png',
+                                title1: 'Pedicure & Manicure',
+                                title2: 'Offer for \$30',
+                                Size: 18,
+                              ),
+                              const SizedBox(height: 25),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  CostomIconB(
+                                    uri:
+                                        'https://www.facebook.com/ismail.alnajjar.2025',
+                                    icon: FontAwesomeIcons.facebook,
+                                  ),
+                                  SizedBox(width: 20),
+                                  CostomIconB(
+                                    uri: 'https://www.instagram.com/',
+                                    icon: FontAwesomeIcons.instagram,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),

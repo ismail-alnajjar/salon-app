@@ -59,7 +59,7 @@ class _SignUpState extends ConsumerState<SignUp> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const Login()),
+        MaterialPageRoute(builder: (_) => const LoginPage()),
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -87,7 +87,7 @@ class _SignUpState extends ConsumerState<SignUp> {
         } else {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (_) => const Login()),
+            MaterialPageRoute(builder: (_) => const LoginPage()),
           );
         }
         return false;
@@ -210,7 +210,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (_) => const Login()),
+                        MaterialPageRoute(builder: (_) => const LoginPage()),
                       );
                     },
                     child: const Text(

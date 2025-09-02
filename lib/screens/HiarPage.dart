@@ -10,14 +10,14 @@ class HairPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: isDarkMode
-          ? const Color(0xff2C2C2C)
-          : const Color(0xffF6D8D8),
+          ? const Color(0xff2B2B2B) // رمادي داكن ناعم
+          : const Color(0xffFBEAEA), // بيج وردي فاتح
       appBar: AppBar(
         backgroundColor: isDarkMode
-            ? const Color(0xff3E3E3E)
-            : const Color(0xffE9C1C1),
-        elevation: 4,
-        shadowColor: Colors.black.withOpacity(0.2),
+            ? const Color(0xff3A3A3A) // أفتح شوي من الخلفية الداكنة
+            : const Color(0xffF2CFCF), // درجة أغمق من الخلفية الفاتحة
+        elevation: 3,
+        shadowColor: Colors.black.withOpacity(0.15),
         surfaceTintColor: Colors.transparent,
         title: Text(
           'Hair Services',
@@ -36,7 +36,7 @@ class HairPage extends StatelessWidget {
             },
             icon: Icon(
               Icons.shopping_cart_outlined,
-              color: isDarkMode ? Colors.amber[300] : Colors.brown[800],
+              color: isDarkMode ? Colors.pink[300] : Colors.pink[700],
               size: 26,
             ),
           ),
@@ -49,7 +49,7 @@ class HairPage extends StatelessWidget {
               title3: '30\$',
               width1: double.infinity,
               height1: 150,
-              Name: 'assets/pngegg.png',
+              Name: 'assets/1-H.png',
               title1: 'Hair cut',
               title2: 'Long haircut & short haircut & sideburns cut',
             ),
@@ -57,7 +57,7 @@ class HairPage extends StatelessWidget {
               title3: '40\$',
               width1: double.infinity,
               height1: 150,
-              Name: 'assets/pngegg.png',
+              Name: 'assets/2-H.png',
               title1: 'Hair styling',
               title2: 'Professional hair styling with modern looks',
             ),
@@ -65,7 +65,7 @@ class HairPage extends StatelessWidget {
               title3: '25\$',
               width1: double.infinity,
               height1: 150,
-              Name: 'assets/pngegg.png',
+              Name: 'assets/3-H.png',
               title1: 'Trim',
               title2: 'Beard trimming & sideburns',
             ),
@@ -73,7 +73,7 @@ class HairPage extends StatelessWidget {
               title3: '50\$',
               width1: double.infinity,
               height1: 150,
-              Name: 'assets/pngegg.png',
+              Name: 'assets/4-H.png',
               title1: 'Coloring',
               title2: 'Hair coloring & highlights',
             ),
@@ -81,7 +81,7 @@ class HairPage extends StatelessWidget {
               title3: '60\$',
               width1: double.infinity,
               height1: 150,
-              Name: 'assets/pngegg.png',
+              Name: 'assets/5-H.png',
               title1: 'Keratin',
               title2: 'Keratin treatment for smooth shiny hair',
             ),

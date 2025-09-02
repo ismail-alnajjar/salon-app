@@ -13,14 +13,14 @@ final isLoadingProvider = StateProvider<bool>((ref) => false);
 final emailErrorProvider = StateProvider<String?>((ref) => null);
 final passwordErrorProvider = StateProvider<String?>((ref) => null);
 
-class Login extends ConsumerStatefulWidget {
-  const Login({super.key});
+class LoginPage extends ConsumerStatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  ConsumerState<Login> createState() => _LoginState();
+  ConsumerState<LoginPage> createState() => _LoginState();
 }
 
-class _LoginState extends ConsumerState<Login> {
+class _LoginState extends ConsumerState<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
 

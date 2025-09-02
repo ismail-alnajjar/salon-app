@@ -12,6 +12,7 @@ class CostumContainer extends StatelessWidget {
     this.height,
     this.height1,
     this.width1,
+    required this.Size,
   });
   final String Name;
   final String title1;
@@ -21,20 +22,21 @@ class CostumContainer extends StatelessWidget {
   final double? height;
   final double? height1;
   final double? width1;
+  final double Size;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 120,
-        width: 300,
+        height: height1 ?? 120,
+        width: width1 ?? 300,
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: isDarkMode
               ? const Color.fromARGB(255, 168, 106, 106).withOpacity(0.3)
               : const Color.fromARGB(255, 218, 163, 163).withOpacity(0.99),
           borderRadius: BorderRadius.circular(16),
-
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
@@ -43,31 +45,40 @@ class CostumContainer extends StatelessWidget {
             ),
           ],
         ),
-
         child: Row(
           children: [
-            Image.asset(Name),
-            SizedBox(width: width),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  title1,
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black87,
+            // الصورة ثابتة الحجم
+            Image.asset(Name, height: 100, width: 100, fit: BoxFit.cover),
+            SizedBox(width: width ?? 10),
+            // النص قابل للالتفاف
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title1,
+                    style: TextStyle(
+                      fontSize: Size,
+                      fontWeight: FontWeight.bold,
+                      color: isDarkMode ? Colors.white : Colors.black87,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                Text(
-                  title2,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: isDarkMode ? Colors.white : Colors.black87,
+                  const SizedBox(height: 4),
+                  Text(
+                    title2,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: isDarkMode ? Colors.white : Colors.black87,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

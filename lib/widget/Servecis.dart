@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/model/ServecisModel.dart';
 
 class Servecis extends StatelessWidget {
   final String title;
   final String image;
   final String description;
   final List<Map<String, String>> services;
+  final Function(Service1) onBookNow; // 👈 callback
 
   const Servecis({
     super.key,
@@ -12,6 +14,7 @@ class Servecis extends StatelessWidget {
     required this.image,
     required this.description,
     required this.services,
+    required this.onBookNow,
   });
 
   @override
@@ -25,7 +28,7 @@ class Servecis extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // صورة
+            // الصورة
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Image.asset(
@@ -51,47 +54,43 @@ class Servecis extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // الخدمات
-            Text(
-              "Available Services",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.pink.shade400,
-              ),
-            ),
-
-            const SizedBox(height: 8),
-            ...services.map(
-              (service) => ListTile(
+            // قائمة الخدمات
+            ...services.map((service) {
+              return ListTile(
                 leading: const Icon(Icons.check_circle, color: Colors.pink),
                 title: Text(service["name"]!),
                 subtitle: Text("Duration: ${service["time"]}"),
-                trailing: Text(
-                  "\$${service["price"]}",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
+                trailing: Text("\$${service["price"]}"),
+              );
+            }),
 
             const SizedBox(height: 12),
 
-            // زر
+            // زر الحجز
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.pink.shade400,
+                  backgroundColor: Colors.pink,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
                 onPressed: () {
-                  // الحجز
+                  // نختار الخدمة الأولى (مثلاً) أو نعدل بحيث يختار المستخدم
+                  final firstService = services.first;
+
+                  onBookNow(
+                    Service1(
+                      name: firstService["name"]!,
+                      description: description,
+                      image: image,
+                      price: double.parse(firstService["price"]!),
+                      date: DateTime.now(), // مبدئياً
+                      time: TimeOfDay.now(), // مبدئياً
+                    ),
+                  );
                 },
                 child: const Text(
                   "Book Now",

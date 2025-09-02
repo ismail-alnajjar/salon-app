@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/screens/Bookings.dart';
+import 'package:salon_app/screens/ProfilePage.dart';
 import 'package:salon_app/widget/CostumListile.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -36,7 +37,15 @@ class CustomDrawer extends StatelessWidget {
             CostomListile(
               title: 'Profile',
               iconData: Icons.person,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ProfilePage(userName: '', userEmail: ''),
+                  ),
+                );
+              },
             ),
             CostomListile(
               title: 'Settings',
