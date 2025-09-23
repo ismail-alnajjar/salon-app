@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:salon_app/helper/static1.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:salon_app/model/ServecisModel.dart';
+import 'package:salon_app/widget/CartProvider.dart';
 
-class CostumCon2 extends StatelessWidget {
+class CostumCon2 extends ConsumerWidget {
   const CostumCon2({
     super.key,
     required this.Name,
@@ -10,10 +11,10 @@ class CostumCon2 extends StatelessWidget {
     required this.title2,
     required this.title3,
     this.width,
-    this.onTap,
     this.height,
     this.height1,
     this.width1,
+    this.onTap,
   });
 
   final String Name;
@@ -21,13 +22,13 @@ class CostumCon2 extends StatelessWidget {
   final String title2;
   final String title3;
   final double? width;
-  final VoidCallback? onTap;
   final double? height;
   final double? height1;
   final double? width1;
+  final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -37,8 +38,8 @@ class CostumCon2 extends StatelessWidget {
         height: height1 ?? height ?? 140,
         width: width1 ?? width ?? double.infinity,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [const Color(0xffF6D8D8), const Color(0xffE9C1C1)],
+          gradient: const LinearGradient(
+            colors: [Color(0xffF6D8D8), Color(0xffE9C1C1)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -103,6 +104,7 @@ class CostumCon2 extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () async {
+                            // اختيار التاريخ
                             DateTime? selectedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
@@ -113,20 +115,25 @@ class CostumCon2 extends StatelessWidget {
                             );
                             if (selectedDate == null) return;
 
+                            // اختيار الوقت
                             TimeOfDay? selectedTime = await showTimePicker(
                               context: context,
                               initialTime: TimeOfDay.now(),
                             );
                             if (selectedTime == null) return;
 
-                            bool alreadyAdded = Cart.items.any(
-                              (item) =>
-                                  item.name == title1 &&
-                                  item.date == selectedDate &&
-                                  item.time == selectedTime,
-                            );
+                            // تحقق من وجود الخدمة مسبقًا بنفس التاريخ والوقت
+                            bool alreadyBooked = ref
+                                .read(cartProvider)
+                                .cartItems
+                                .any(
+                                  (item) =>
+                                      item.name == title1 &&
+                                      item.date == selectedDate &&
+                                      item.time == selectedTime,
+                                );
 
-                            if (alreadyAdded) {
+                            if (alreadyBooked) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
@@ -138,20 +145,22 @@ class CostumCon2 extends StatelessWidget {
                               return;
                             }
 
-                            Cart.items.add(
-                              Service1(
-                                name: title1,
-                                description: title2,
-                                image: Name,
-                                price:
-                                    double.tryParse(
-                                      title3.replaceAll('\$', ''),
-                                    ) ??
-                                    0,
-                                date: selectedDate,
-                                time: selectedTime,
-                              ),
+                            // إنشاء الخدمة
+                            Service1 service = Service1(
+                              name: title1,
+                              description: title2,
+                              image: Name,
+                              price:
+                                  double.tryParse(
+                                    title3.replaceAll('\$', ''),
+                                  ) ??
+                                  0,
+                              date: selectedDate,
+                              time: selectedTime,
                             );
+
+                            // إضافة الخدمة للسلة
+                            ref.read(cartProvider).addService(service);
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

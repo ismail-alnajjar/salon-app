@@ -1,19 +1,15 @@
+// lib/screens/booking_page.dart
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:salon_app/helper/static1.dart';
-import 'package:salon_app/model/Bookingsmodels.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salon_app/widget/CartProvider.dart';
 
-class BookingPage extends StatefulWidget {
+class BookingPage extends ConsumerWidget {
   const BookingPage({super.key});
 
   @override
-  State<BookingPage> createState() => _BookingPageState();
-}
-
-class _BookingPageState extends State<BookingPage> {
-  @override
-  Widget build(BuildContext context) {
-    final items = Cart.items;
-    double total = items.fold(0, (sum, item) => sum + item.price);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final items = ref.watch(cartProvider).cartItems;
 
     return Scaffold(
       appBar: AppBar(
@@ -24,164 +20,111 @@ class _BookingPageState extends State<BookingPage> {
           ? const Center(child: Text("السلة فارغة 🛒"))
           : Column(
               children: [
-                // قائمة الخدمات في السلة
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.all(12),
                     itemCount: items.length,
                     itemBuilder: (context, index) {
-                      final service = items[index];
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                      final s = items[index];
+                      return ListTile(
+                        leading: Image.asset(s.image, width: 60, height: 60),
+                        title: Text(s.name),
+                        subtitle: Text(
+                          "تاريخ: ${s.date!.toLocal().toString().split(' ')[0]}\n"
+                          "الوقت: ${s.time!.format(context)}",
                         ),
-                        elevation: 3,
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        child: ListTile(
-                          leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.asset(
-                              service.image,
-                              width: 50,
-                              fit: BoxFit.cover,
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("${s.price}\$"),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () {
+                                ref.read(cartProvider).removeService(s);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "${s.name} تمت إزالته من السلة",
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                          ),
-                          title: Text(
-                            service.name,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            "${service.description}\n"
-                            "تاريخ الحجز: ${service.date?.toLocal().toString().split(' ')[0] ?? '---'}\n"
-                            "الوقت: ${service.time?.format(context) ?? '---'}",
-                            style: const TextStyle(fontSize: 13),
-                          ),
-                          isThreeLine: true,
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "${service.price}\$",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    items.removeAt(index);
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
+                          ],
                         ),
                       );
                     },
                   ),
                 ),
-
-                // عرض الإجمالي
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.brown[100],
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(16),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: const Offset(0, -3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "الإجمالي:",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "$total\$",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.brown,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // زر تأكيد الحجز
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () {
-                        if (items.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("السلة فارغة!"),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                          return;
-                        }
-
-                        // تحويل كل Service1 إلى Booking
-                        for (var s in items) {
-                          if (s.date != null && s.time != null) {
-                            Cart.bookings.add(
-                              Booking(
-                                serviceName: s.name,
-                                description: s.description,
-                                image: s.image,
-                                price: s.price,
-                                date: s.date!,
-                                time: s.time!,
-                                userId: null,
-                              ),
-                            );
-                          }
-                        }
-
-                        // تفريغ السلة بعد التأكيد
-                        Cart.items.clear();
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("تم تأكيد الحجز ✅"),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-
-                        setState(() {});
-                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.brown[400],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
                       ),
+                      onPressed: () async {
+                        try {
+                          // نسخ العناصر لإنشاء الإشعارات قبل مسح السلة
+                          final itemsToNotify = List.of(items);
+
+                          // حفظ الحجوزات في Firestore ومسح السلة
+                          await ref.read(cartProvider).confirmBooking();
+
+                          // التأكد من إذن الإشعارات
+                          bool isAllowed = await AwesomeNotifications()
+                              .isNotificationAllowed();
+                          if (!isAllowed) {
+                            isAllowed = await AwesomeNotifications()
+                                .requestPermissionToSendNotifications();
+                          }
+
+                          if (isAllowed) {
+                            for (var s in itemsToNotify) {
+                              // إشعار تجريبي بعد 10 ثواني
+
+                              // إشعار حقيقي قبل الموعد بنصف ساعة
+                              final DateTime bookingDateTime = DateTime(
+                                s.date!.year,
+                                s.date!.month,
+                                s.date!.day,
+                                s.time!.hour,
+                                s.time!.minute,
+                              );
+                              final DateTime realReminder = bookingDateTime
+                                  .subtract(const Duration(minutes: 30));
+
+                              if (realReminder.isAfter(DateTime.now())) {
+                                AwesomeNotifications().createNotification(
+                                  content: NotificationContent(
+                                    id: s.hashCode + 1000,
+                                    channelKey: 'basic_channel',
+                                    title: '⏰ تذكير بالحجز',
+                                    body:
+                                        'موعدك للخدمة ${s.name} الساعة ${s.time!.format(context)}',
+                                  ),
+                                  schedule: NotificationCalendar.fromDate(
+                                    date: realReminder,
+                                  ),
+                                );
+                              }
+                            }
+                          }
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("تم تأكيد الحجز ✅")),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("خطأ أثناء الحفظ: $e")),
+                          );
+                        }
+                      },
                       child: const Text(
                         "تأكيد الحجز",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),

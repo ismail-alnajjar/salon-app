@@ -37,7 +37,7 @@ class _LoginState extends ConsumerState<LoginPage> {
   }
 
   Future<void> login() async {
-    // إلغاء الأخطاء السابقة
+    // إعادة تعيين الأخطاء
     ref.read(emailErrorProvider.notifier).state = null;
     ref.read(passwordErrorProvider.notifier).state = null;
 
@@ -57,7 +57,7 @@ class _LoginState extends ConsumerState<LoginPage> {
           firebaseUser,
         );
 
-        if (!mounted) return; // تأكد أن الصفحة ما تزال فعالة
+        if (!mounted) return;
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const HomePage()),
@@ -105,110 +105,104 @@ class _LoginState extends ConsumerState<LoginPage> {
         return true;
       },
       child: Scaffold(
-        body: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xffD39E9E),
-                    Color.fromARGB(255, 200, 171, 149),
-                    Color.fromARGB(255, 171, 130, 130),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/salon.png', height: 200),
-                        const SizedBox(height: 40),
-                        const Text(
-                          "Login to your account",
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
-                        ),
-                        const SizedBox(height: 40),
-                        CustomTextForm(
-                          name: "Email",
-                          controller: emailController,
-                          errorText: emailError,
-                        ),
-                        const SizedBox(height: 20),
-                        CustomTextForm(
-                          name: "Password",
-                          controller: passwordController,
-                          obscureText: true,
-                          errorText: passwordError,
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: isLoading ? null : login,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            child: isLoading
-                                ? const CircularProgressIndicator(
-                                    color: Color(0xFF6A11CB),
-                                    strokeWidth: 3,
-                                  )
-                                : const Text(
-                                    "Login",
-                                    style: TextStyle(
-                                      color: Color.fromARGB(255, 168, 100, 175),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xffD39E9E),
+                Color.fromARGB(255, 200, 171, 149),
+                Color.fromARGB(255, 171, 130, 130),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/salon.png', height: 200),
+                    const SizedBox(height: 40),
+                    const Text(
+                      "Login to your account",
+                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                    ),
+                    const SizedBox(height: 40),
+                    CustomTextForm(
+                      name: "Email",
+                      controller: emailController,
+                      errorText: emailError,
+                    ),
+                    const SizedBox(height: 20),
+                    CustomTextForm(
+                      name: "Password",
+                      controller: passwordController,
+                      obscureText: true,
+                      errorText: passwordError,
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: isLoading ? null : login,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Don't have an account? ",
-                              style: TextStyle(color: Colors.white70),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const SignUp(),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                "Sign Up",
+                        child: isLoading
+                            ? const CircularProgressIndicator(
+                                color: Color(0xFF6A11CB),
+                                strokeWidth: 3,
+                              )
+                            : const Text(
+                                "Login",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Color.fromARGB(255, 168, 100, 175),
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Don't have an account? ",
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (_) => const SignUp()),
+                            );
+                          },
+                          child: const Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

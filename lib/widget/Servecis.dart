@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:salon_app/model/ServecisModel.dart';
+import 'package:salon_app/widget/CartProvider.dart';
 
-class Servecis extends StatelessWidget {
+class Servecis extends ConsumerWidget {
   final String title;
   final String image;
   final String description;
   final List<Map<String, String>> services;
-  final Function(Service1) onBookNow; // 👈 callback
 
   const Servecis({
     super.key,
@@ -14,11 +15,10 @@ class Servecis extends StatelessWidget {
     required this.image,
     required this.description,
     required this.services,
-    required this.onBookNow,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       margin: const EdgeInsets.all(16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -28,7 +28,6 @@ class Servecis extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // الصورة
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Image.asset(
@@ -39,22 +38,16 @@ class Servecis extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-
-            // العنوان
             Text(
               title,
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-
-            // الوصف
             Text(
               description,
               style: const TextStyle(fontSize: 14, color: Colors.black87),
             ),
             const SizedBox(height: 16),
-
-            // قائمة الخدمات
             ...services.map((service) {
               return ListTile(
                 leading: const Icon(Icons.check_circle, color: Colors.pink),
@@ -63,10 +56,7 @@ class Servecis extends StatelessWidget {
                 trailing: Text("\$${service["price"]}"),
               );
             }),
-
             const SizedBox(height: 12),
-
-            // زر الحجز
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -78,18 +68,23 @@ class Servecis extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
                 onPressed: () {
-                  // نختار الخدمة الأولى (مثلاً) أو نعدل بحيث يختار المستخدم
                   final firstService = services.first;
 
-                  onBookNow(
-                    Service1(
-                      name: firstService["name"]!,
-                      description: description,
-                      image: image,
-                      price: double.parse(firstService["price"]!),
-                      date: DateTime.now(), // مبدئياً
-                      time: TimeOfDay.now(), // مبدئياً
-                    ),
+                  ref
+                      .read(cartProvider)
+                      .addService(
+                        Service1(
+                          name: firstService["name"]!,
+                          description: description,
+                          image: image,
+                          price: double.parse(firstService["price"]!),
+                          date: DateTime.now(),
+                          time: TimeOfDay.now(),
+                        ),
+                      );
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("تم إضافة الخدمة للسلة ✅")),
                   );
                 },
                 child: const Text(

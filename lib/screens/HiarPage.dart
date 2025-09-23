@@ -10,12 +10,12 @@ class HairPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: isDarkMode
-          ? const Color(0xff2B2B2B) // رمادي داكن ناعم
-          : const Color(0xffFBEAEA), // بيج وردي فاتح
+          ? const Color(0xff2B2B2B)
+          : const Color(0xffFBEAEA),
       appBar: AppBar(
         backgroundColor: isDarkMode
-            ? const Color(0xff3A3A3A) // أفتح شوي من الخلفية الداكنة
-            : const Color(0xffF2CFCF), // درجة أغمق من الخلفية الفاتحة
+            ? const Color(0xff3A3A3A)
+            : const Color(0xffF2CFCF),
         elevation: 3,
         shadowColor: Colors.black.withOpacity(0.15),
         surfaceTintColor: Colors.transparent,
