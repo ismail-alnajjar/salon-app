@@ -24,7 +24,7 @@ android {
         applicationId = "com.example.salon_app"
         compileSdk = 35
         ndkVersion = "27.0.12077973"
-      minSdk = 23
+      minSdk = flutter.minSdkVersion
     targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -34,6 +34,13 @@ android {
         release {
             // For release, replace with your proper signing config
             signingConfig = signingConfigs.getByName("debug")
+                    isMinifyEnabled = true
+        isShrinkResources = true
+        proguardFiles(
+            getDefaultProguardFile("proguard-android-optimize.txt"),
+            "proguard-rules.pro"
+        )
+
         }
     }
 }

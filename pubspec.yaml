@@ -38,7 +38,7 @@ dependencies:
   url_launcher: ^6.1.10
   image_picker: ^1.1.0
   awesome_notifications: ^0.10.1
-  
+  firebase_storage: ^12.4.10
 
 
 

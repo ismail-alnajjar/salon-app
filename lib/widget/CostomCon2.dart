@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:salon_app/helper/static1.dart'; // للتأكد من وجود isDarkMode
 import 'package:salon_app/model/ServecisModel.dart';
 import 'package:salon_app/widget/CartProvider.dart';
 
@@ -38,11 +39,9 @@ class CostumCon2 extends ConsumerWidget {
         height: height1 ?? height ?? 140,
         width: width1 ?? width ?? double.infinity,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xffF6D8D8), Color(0xffE9C1C1)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: isDarkMode
+              ? const Color.fromARGB(255, 168, 106, 106).withOpacity(0.3)
+              : const Color.fromARGB(255, 218, 163, 163).withOpacity(0.99),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -78,9 +77,10 @@ class CostumCon2 extends ConsumerWidget {
                   children: [
                     Text(
                       title1,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
+                        color: isDarkMode ? Colors.white : Colors.black87,
                       ),
                     ),
                     Expanded(
@@ -88,7 +88,11 @@ class CostumCon2 extends ConsumerWidget {
                         title2,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 13, height: 1.4),
+                        style: TextStyle(
+                          fontSize: 13,
+                          height: 1.4,
+                          color: isDarkMode ? Colors.white : Colors.black87,
+                        ),
                       ),
                     ),
                     Row(
@@ -104,6 +108,15 @@ class CostumCon2 extends ConsumerWidget {
                         ),
                         ElevatedButton(
                           onPressed: () async {
+                            // إظهار مؤشر تحميل أثناء اختيار التاريخ والوقت
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (_) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+
                             // اختيار التاريخ
                             DateTime? selectedDate = await showDatePicker(
                               context: context,
@@ -113,13 +126,20 @@ class CostumCon2 extends ConsumerWidget {
                                 const Duration(days: 365),
                               ),
                             );
-                            if (selectedDate == null) return;
+
+                            if (selectedDate == null) {
+                              Navigator.pop(context);
+                              return;
+                            }
 
                             // اختيار الوقت
                             TimeOfDay? selectedTime = await showTimePicker(
                               context: context,
                               initialTime: TimeOfDay.now(),
                             );
+
+                            Navigator.pop(context); // إخفاء التحميل
+
                             if (selectedTime == null) return;
 
                             // تحقق من وجود الخدمة مسبقًا بنفس التاريخ والوقت

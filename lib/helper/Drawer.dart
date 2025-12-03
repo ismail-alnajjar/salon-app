@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/screens/Bookings.dart';
 import 'package:salon_app/screens/ProfilePage.dart';
+import 'package:salon_app/screens/login.dart';
 import 'package:salon_app/widget/CostumListile.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -42,16 +43,12 @@ class CustomDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        ProfilePage(userName: '', userEmail: ''),
+                        const ProfilePage(), // لا حاجة لتمرير أي بيانات
                   ),
                 );
               },
             ),
-            CostomListile(
-              title: 'Settings',
-              iconData: Icons.settings,
-              onTap: () {},
-            ),
+
             /////////////////////////////////////
             CostomListile(
               title: 'Bookings',
@@ -83,6 +80,19 @@ class CustomDrawer extends StatelessWidget {
                     ? Color.fromARGB(255, 255, 255, 255)
                     : Color.fromARGB(255, 0, 0, 0),
               ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                // إعادة التوجيه إلى صفحة تسجيل الدخول بطريقة آمنة
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                  (route) => false, // حذف كل الصفحات السابقة
+                );
+              },
             ),
           ],
         ),

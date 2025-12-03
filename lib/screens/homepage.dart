@@ -6,8 +6,8 @@ import 'package:salon_app/screens/HiarPage.dart';
 import 'package:salon_app/screens/MakeupPage.dart';
 import 'package:salon_app/screens/NailPage.dart';
 import 'package:salon_app/screens/OffersPage.dart';
-import 'package:salon_app/screens/OurOffersPage.dart';
 import 'package:salon_app/screens/SkinPage.dart';
+import 'package:salon_app/widget/CostomCon2.dart';
 import 'package:salon_app/widget/CostumCard.dart';
 import 'package:salon_app/widget/CostumContainer.dart';
 import 'package:salon_app/widget/CostumIconB.dart';
@@ -275,22 +275,15 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-
-                              CostumContainer(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const OurOffersPage(),
-                                    ),
-                                  );
-                                },
+                              CostumCon2(
+                                title3: '35\$',
+                                width1: 300,
+                                height1: 130,
                                 Name: 'assets/mana.png',
                                 title1: 'Pedicure & Manicure',
-                                title2: 'Offer for \$30',
-                                Size: 18,
+                                title2: '',
                               ),
+
                               const SizedBox(height: 25),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
